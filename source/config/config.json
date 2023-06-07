@@ -1,0 +1,26 @@
+{
+  "production": {
+    "username": "postgres",
+    "password": "fmXZgfEtOLquzqeyoboLRztDXEDuQIoU",
+    "database": "telemedicina_production",
+    "host": "54.244.177.61",
+    "port": "13579",
+    "dialect": "postgres",
+    "logging": false,
+    "query": {
+      "raw": true
+    }
+  },
+  "development": {
+    "username": "postgres",
+    "password": "fmXZgfEtOLquzqeyoboLRztDXEDuQIoU",
+    "database": "telemedicina_production",
+    "host": "54.244.177.61",
+    "port": "13579",
+    "dialect": "postgres",
+    "logging": false,
+    "query": {
+      "raw": true
+    }
+  }
+}

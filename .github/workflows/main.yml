@@ -1,0 +1,38 @@
+name: Discord Notification
+
+on:
+  pull_request:
+    types: [ opened, reopened ]
+
+jobs:
+  notification:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Run a multi-line script
+        run: |
+          echo "${{ github.event.pull_request }}"
+          curl --request GET  --url 'https://api.giphy.com/v1/gifs/random?api_key=2JOQyI3rVHJiwxvzSQXdG9elXv4yM5vi&tag=reactions' > gif.txt
+          _gif="$(grep -Eoi '"image_url":"[^"]*' gif.txt | grep -Eoi '[^"]*$')"
+          curl --request POST \
+            --url https://discord.com/api/webhooks/842096915097059389/TpTMphWdR-N675Pctk8LV1ZTp-yIlsmLAKMEuTn9qgLeLoOgNYGF75RXf4sP6WhNvFCl \
+            --header 'Content-Type: application/json' \
+            --cookie __dcfduid=14b2ec27e4e44d1b9d64a6aeaee0caae \
+            --data '{
+              "embeds": [
+                {
+                  "title": "Novo PR: ${{ github.event.pull_request.number }} || ${{ github.event.pull_request.title }}",
+                  "author": {
+                    "name": "${{ github.event.pull_request.user.login }}",
+                    "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
+                  },
+                  "image": {
+                    "url": "'"$_gif"'"
+                  },
+                  "url": "${{ github.event.pull_request.html_url }}",
+                  "description": "Lembrar: :thumbsup: quando for corrigir...",
+                  "type": "rich",
+                  "color": "30719"
+                }
+              ]
+          }'

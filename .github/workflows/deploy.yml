@@ -1,0 +1,20 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted]
+    steps:
+      - uses: actions/checkout@v2.3.3
+      - uses: actions/setup-node@v1.4.4
+        with:
+          node-version: 12.x
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npx pm2 delete telemedicina-back-end
+      - run: cp /home/ec2-user/repository/telemedicina-back-end/build/config/config.json build/config
+      - run: cp /home/ec2-user/repository/telemedicina-back-end/.env .
+      - run: npx pm2 start build/server.js --name telemedicina-back-end
